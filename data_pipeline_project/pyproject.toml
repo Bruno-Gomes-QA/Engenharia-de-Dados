@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "data-pipeline-project"
+version = "0.1.0"
+description = ""
+authors = ["Bruno-Gomes-QA <bruno.gomes.qa@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+python-dotenv = "^1.0.1"
+requests = "^2.32.3"
+blue = "^0.9.1"
+pyspark = "^3.5.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
