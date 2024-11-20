@@ -15,13 +15,9 @@ class AppSheetExtractor:
         }
 
         payload = {
-            "Action": "Find",
-            "Properties": {
-                "Locale": "pt-BR",
-                "Timezone": "America/Sao_Paulo"
-            },
-            "Rows": [
-            ]
+            'Action': 'Find',
+            'Properties': {'Locale': 'pt-BR', 'Timezone': 'America/Sao_Paulo'},
+            'Rows': [],
         }
         try:
             response = requests.post(endpoint, headers=headers, json=payload)
@@ -32,8 +28,3 @@ class AppSheetExtractor:
             return http_err, None
         except Exception as err:
             return err, None
-
-
-
-
-
