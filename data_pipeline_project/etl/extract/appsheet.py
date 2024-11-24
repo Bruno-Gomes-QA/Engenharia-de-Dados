@@ -1,5 +1,6 @@
 import requests
 
+
 class AppSheetExtractor:
     def __init__(self, api_url, api_key, app_id):
         self.api_url = api_url
