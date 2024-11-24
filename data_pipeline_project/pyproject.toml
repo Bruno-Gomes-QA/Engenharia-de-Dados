@@ -11,6 +11,7 @@ python-dotenv = "^1.0.1"
 requests = "^2.32.3"
 blue = "^0.9.1"
 pyspark = "^3.5.3"
+boto3 = "^1.35.68"
 
 
 [build-system]
