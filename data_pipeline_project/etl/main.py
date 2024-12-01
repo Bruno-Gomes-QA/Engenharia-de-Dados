@@ -19,41 +19,31 @@ def main():
     try:
         with SparkSessionManager() as spark:
             appsheet_extractor = AppSheetExtractor(
-                config.API_URL, config.APPSHEET_API_KEY, config.APP_ID
+                config.API_URL, config.APPSHEET_API_KEY, config.APP_ID, logger
             )
-            convert = Convert(spark)
-            upload_manager = UploadManager()
+            convert = Convert(spark, logger)
+            upload_manager = UploadManager(logger)
 
             for table_name in config.TABLE_NAMES:
                 logger.info(f'Extracting data from table: {table_name}')
-                error, data = appsheet_extractor.extract(table_name=table_name)
-
-                if error:
-                    logger.error(
-                        f'Failed to extract data from {table_name}: {error}'
+                data = appsheet_extractor.extract(table_name)
+                with tempfile.TemporaryDirectory() as tmpdir:
+                    temp_parquet_file = convert.json_to_parquet(
+                        data, tmpdir
                     )
-                else:
                     logger.info(
-                        f'Data extracted successfully from {table_name}'
+                        f'Data from {table_name} transformed to Parquet, and saved at: {temp_parquet_file}'
                     )
-                    with tempfile.TemporaryDirectory() as tmpdir:
-                        temp_parquet_file = convert.json_to_parquet(
-                            data, tmpdir
-                        )
-                        logger.info(
-                            f'Data from {table_name} transformed to Parquet, and saved at: {temp_parquet_file}'
-                        )
 
-                        s3_key = f'{table_name}.parquet'
-                        upload_manager.upload_to_s3(
-                            temp_parquet_file,
-                            config.AWS_BUCKET_NAME,
-                            s3_key,
-                            logger,
-                        )
+                    s3_key = f'{table_name}.parquet'
+                    upload_manager.upload_to_s3(
+                        temp_parquet_file,
+                        config.AWS_BUCKET_NAME,
+                        s3_key
+                    )
 
     except Exception as e:
-        logger.exception('ETL process failed')
+        logger.exception(f'ETL process failed, error: {e}')
 
 
 if __name__ == '__main__':
