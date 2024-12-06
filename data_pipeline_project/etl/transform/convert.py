@@ -25,9 +25,13 @@ class Convert:
                 self.logger.error(
                     'No Parquet file was found in the temporary directory.'
                 )
-                raise ValueError('No Parquet file was found in the temporary directory.')
-            
-            self.logger.info(f'Parquet file generated successfully: {parquet_file}')
+                raise ValueError(
+                    'No Parquet file was found in the temporary directory.'
+                )
+
+            self.logger.info(
+                f'Parquet file generated successfully: {parquet_file}'
+            )
             return parquet_file
         except Exception as e:
             self.logger.error(f'Failed to convert JSON to Parquet: {e}')

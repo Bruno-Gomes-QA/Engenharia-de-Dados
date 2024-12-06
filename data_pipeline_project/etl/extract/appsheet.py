@@ -25,9 +25,7 @@ class AppSheetExtractor:
             response = requests.post(endpoint, headers=headers, json=payload)
             response.raise_for_status()
             data = response.json()
-            self.logger.info(
-                f'Data extracted successfully from {table_name}'
-            )
+            self.logger.info(f'Data extracted successfully from {table_name}')
             return data
         except Exception as err:
             self.logger.error(
