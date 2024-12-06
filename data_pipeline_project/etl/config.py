@@ -8,10 +8,13 @@ class Config:
         self.APPSHEET_API_KEY = os.getenv('APPSHEET_API_KEY')
         self.API_URL = os.getenv('APPSHEET_API_URL')
         self.APP_ID = os.getenv('APPSHEET_APP_ID')
-        self.TABLE_NAMES = os.getenv('TABLE_NAMES', 'Produtos').split(',')
+        self.TABLE_NAMES = os.getenv('TABLE_NAMES').split(',')
+        self.TABLE_NAMES = [
+            table.replace(' ', '') for table in self.TABLE_NAMES
+        ]
         self.AWS_BUCKET_NAME = os.getenv('AWS_BUCKET_NAME')
+        self.AWS_BUCKET_PATH = os.getenv('AWS_BUCKET_PATH')
 
-    def validate(self):
         if not all(
             [
                 self.APPSHEET_API_KEY,
@@ -19,10 +22,7 @@ class Config:
                 self.APP_ID,
                 self.TABLE_NAMES,
                 self.AWS_BUCKET_NAME,
+                self.AWS_BUCKET_PATH,
             ]
         ):
             raise ValueError('Missing environment variables')
-
-
-config = Config()
-config.validate()
